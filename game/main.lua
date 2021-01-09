@@ -9,11 +9,8 @@ function love.load()
 
     myFont = love.graphics.newFont(40)
     fontHeight = myFont:getHeight()
-    difficulty = {}
-    difficulty[1] = "Easy"
-    difficulty[2] = "Normal"
-    difficulty[3] = "Hard"
-    difficulty[4] = "Insane"
+    difficulty = {"Easy", "Normal", "Hard", "Insane"}
+
 end
 
 function love.update(dt)
@@ -56,26 +53,20 @@ local gameState = 0
 function love.draw()
 
     local menu = {}
-    menu.main = {}
-    menu.question = {}
-    menu.result = {}
+    menu.main = {} --difficulty selection screen
+    menu.question = {} --question screen
+    menu.result = {} --result screen
 
-    local main.buttons = {}
-    local main.buttons.b1 = {x, y, buttonHeight, buttonWidth, isPressed}
-    local main.buttons.b1.isPressed = false
-
-    local main.buttons.b2 = {x, y, buttonHeight, buttonWidth, isPressed}
-    local main.buttons.b1.isPressed = false
-
-    local main.buttons.b3 = {x, y, buttonHeight, buttonWidth, isPressed}
-    local main.buttons.b3.isPressed = false
-
-    local main.buttons.b4 = {x, y, buttonHeight, buttonWidth, isPressed}
-    local main.buttons.b4.isPressed = false
-
+    --there will be a function that switches screen depending on the gamestate
 
     love.graphics.setBackgroundColor(1, 1, 1, 1)
     love.graphics.setFont(myFont)
+
+    menu.main.buttons = {}
+    menu.main.buttons.b1 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 - 50, buttonWidth=410, buttonHeight=100, isPressed=false}
+    menu.main.buttons.b2 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 + 60, buttonWidth=410, buttonHeight=100, isPressed=false}
+    menu.main.buttons.b3 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 + 170, buttonWidth=410, buttonHeight=100, isPressed=false}
+    menu.main.buttons.b4 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 + 280, buttonWidth=410, buttonHeight=100, isPressed=false}
 
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 205, WINDOW_HEIGHT / 4 - 50, 410, 100)
@@ -104,5 +95,23 @@ function love.draw()
     love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 285, 400, 90)
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.printf(difficulty[4], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 330 - fontHeight / 2, 400, "center")
+
+    if menu.main.buttons.b1.isPressed then
+        gameState = gameState + 1
+    end
+
+    if menu.main.buttons.b2.isPressed then
+        gameState = gameState + 1
+    end
+    
+    if menu.main.buttons.b3.isPressed  then
+        gameState = gameState + 1
+    end
+
+    if menu.main.buttons.b4.isPressed then
+        gameState = gameState + 1
+    end
+    
+
 
 end
