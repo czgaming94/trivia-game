@@ -14,7 +14,21 @@ function love.load()
 end
 
 function love.update(dt)
+    if menu.main.buttons.b1.isPressed then
+        gameState = gameState + 1
+    end
 
+    if menu.main.buttons.b2.isPressed then
+        gameState = gameState + 1
+    end
+    
+    if menu.main.buttons.b3.isPressed  then
+        gameState = gameState + 1
+    end
+
+    if menu.main.buttons.b4.isPressed then
+        gameState = gameState + 1
+    end
 end
 
 --[[
@@ -96,22 +110,6 @@ function love.draw()
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.printf(difficulty[4], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 330 - fontHeight / 2, 400, "center")
 
-    if menu.main.buttons.b1.isPressed then
-        gameState = gameState + 1
-    end
-
-    if menu.main.buttons.b2.isPressed then
-        gameState = gameState + 1
-    end
-    
-    if menu.main.buttons.b3.isPressed  then
-        gameState = gameState + 1
-    end
-
-    if menu.main.buttons.b4.isPressed then
-        gameState = gameState + 1
-    end
-    
 
 
 end
