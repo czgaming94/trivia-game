@@ -83,7 +83,7 @@ function love.draw()
         
         for t=1, 3 do
             for j=1, 6 do
-                table.insert(questions[t], t, difficulty[sequence[t]][j])
+                table.insert(questions[t], t, difficulty[sequence[t]][j]) --there's a fucky-wucky here
             end
         end
     end
@@ -215,29 +215,29 @@ function love.draw()
                 math.abs(menu.main.buttons.b1.y + menu.main.buttons.b1.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b1.buttonHeight / 2  then 
                     gameState = gameState + 1 
                     love.graphics.clear()
-                    menu.main.buttons.b1.isPressed = true
                     questionGUI()
+                    menu.main.buttons.b1.isPressed = true
 
                 elseif math.abs(menu.main.buttons.b2.x + menu.main.buttons.b2.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b2.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b2.y + menu.main.buttons.b2.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b2.buttonHeight / 2  then 
                     gameState = gameState + 1 
                     love.graphics.clear()
-                    menu.main.buttons.b2.isPressed = true
                     questionGUI()
+                    menu.main.buttons.b2.isPressed = true
 
                 elseif math.abs(menu.main.buttons.b3.x + menu.main.buttons.b3.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b3.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b3.y + menu.main.buttons.b3.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b3.buttonHeight / 2  then 
                     gameState = gameState + 1 
                     love.graphics.clear()
-                    menu.main.buttons.b3.isPressed = true
                     questionGUI()
+                    menu.main.buttons.b3.isPressed = true
 
                 elseif math.abs(menu.main.buttons.b4.x + menu.main.buttons.b4.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b4.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b4.y + menu.main.buttons.b4.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b4.buttonHeight / 2  then 
                     gameState = gameState + 1 
                     love.graphics.clear()
-                    menu.main.buttons.b4.isPressed = true
                     questionGUI()
+                    menu.main.buttons.b4.isPressed = true
                 end
             end 
         end
