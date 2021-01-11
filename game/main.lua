@@ -9,35 +9,7 @@ function love.load()
 
     myFont = love.graphics.newFont(40)
     fontHeight = myFont:getHeight()
-    difficulty = {"Easy", "Normal", "Hard", "Insane"}
-
-    questionSet = {
-    Easy = {
-    {"question 1", "answer1", "answer2", "answer3", "answer1"}
-    }, 
-    Normal = {
-
-    }, 
-    Hard = {
-
-    }, 
-    Insane = {
-
-    }}
-
-
-    question = {Easy = {}, Normal = {}, Hard = {}, Insane = {}}
-
-    function questionInsert(n, d, q, aA, aB, aC, aD)
-        questions.d.n = {}
-        table.insert(questions.d.n, 1, q)
-        table.insert(questions.d.n, 2, aA)
-        table.insert(questions.d.n, 3, aB)
-        table.insert(questions.d.n, 4, aC)
-        table.insert(questions.d.n, 5, aD)
-    end
-
-questionInsert(1, Easy, questionSet.Easy[1][1], questionSet.Easy[1][2], questionSet.Easy[1][3], questionSet.Easy[1][4], questionSet.Easy[1][5] )
+    difficulty_string = {"Easy", "Normal", "Hard", "Insane"}
 
 end
 
@@ -56,6 +28,66 @@ function love.draw()
     menu.question = {}      --question screen
     menu.result = {}       --result screen
 
+    questions = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
+    -- {question, answer A, answer B, answer C, answer D, Correct answer }
+    questionPool = {
+    Easy = {
+    {"What  7 + 3 =", "fourteen", "eleven", "ten", "twelve", 4}, {"How many sides does a trapezium have?", "three", "four", "five", "six", 3}, {"The sun is a what?", "star", "planet", "moon", "black hole", 2}, {"Which of the following is not an animal?", "tiger", "seagull", "antelope", "banana", 5}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+    Normal = {
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
+    Hard = {
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, 
+    Insane = {
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}}
+
+
+    function check(n, k)
+        for i=1, 100 do
+            for j=1, n-1 do
+                if sequence[n] == sequence[j] then 
+                    sequence[n] = math.random(k)
+                end
+            end
+        end
+    end
+    
+    function gen(small, big)
+        sequence[1] = math.random(big)
+        for t=2, small do
+        sequence[t] = math.random(big)
+        check(t, big)
+        end
+    end
+
+    function question_fill()
+        sequence = {}
+        gen(3, 4)
+
+        if menu.main.buttons.b1.isPressed then 
+            difficulty = questionPool.Easy
+        elseif menu.main.buttons.b2.isPressed then
+            difficulty = questionPool.Normal
+        elseif menu.main.buttons.b3.isPressed then
+            difficulty = questionPool.Hard
+        elseif menu.main.buttons.b4.isPressed then
+            difficulty = questionPool.Insane
+        end
+        
+        for t=1, 3 do
+            for j=1, 6 do
+                table.insert(questions[t], t, difficulty[sequence[t]][j])
+            end
+        end
+    end
+
     --there will be a function that switches screen depending on the gamestate
 
     love.graphics.setBackgroundColor(1, 1, 1, 1)    --sets background white
@@ -67,6 +99,14 @@ function love.draw()
     menu.main.buttons.b3 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 + 170, buttonWidth=410, buttonHeight=100, isPressed=false}
     menu.main.buttons.b4 = {x = WINDOW_WIDTH / 2 - 205, y = WINDOW_HEIGHT / 4 + 280, buttonWidth=410, buttonHeight=100, isPressed=false}
 
+
+    menu.question.buttons = {}
+    menu.question.question = {x = WINDOW_WIDTH / 2 - 405, y = WINDOW_HEIGHT / 4 - 45, buttonWidth=810, buttonHeight=90}
+    menu.question.buttons.bA = {x = WINDOW_WIDTH / 2 - 405, y = WINDOW_HEIGHT / 4 - 45 + 100, buttonWidth=810, buttonHeight=90, isPressed=false}
+    menu.question.buttons.bB = {x = WINDOW_WIDTH / 2 + 5, y = WINDOW_HEIGHT / 4 - 45 + 100, buttonWidth=810, buttonHeight=90, isPressed=false}
+    menu.question.buttons.bC = {x = WINDOW_WIDTH / 2 - 405, y = WINDOW_HEIGHT / 4 - 45 + 200, buttonWidth=810, buttonHeight=90, isPressed=false}
+    menu.question.buttons.bD = {x = WINDOW_WIDTH / 2 + 5, y = WINDOW_HEIGHT / 4 - 45 + 200, buttonWidth=810, buttonHeight=90, isPressed=false}
+
     local function mainGUI()        --defines main GUI as a function that can be called on when there is a change in gamestate
         if gameState == 0 then
 
@@ -76,7 +116,7 @@ function love.draw()
             love.graphics.setColor(0.9, 1, 0.9, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 - 45, 400, 90)
             love.graphics.setColor(0, 0, 0, 1)
-            love.graphics.printf(difficulty[1], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 - fontHeight / 2, 400, "center")
+            love.graphics.printf(difficulty_string[1], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 - fontHeight / 2, 400, "center")
 
             --Normal difficulty button
             love.graphics.setColor(0, 0, 0, 1)
@@ -84,7 +124,7 @@ function love.draw()
             love.graphics.setColor(0.9, 1, 0.9, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 65, 400, 90)
             love.graphics.setColor(0, 0, 0, 1)
-            love.graphics.printf(difficulty[2], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 110 - fontHeight / 2, 400, "center")
+            love.graphics.printf(difficulty_string[2], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 110 - fontHeight / 2, 400, "center")
 
             --Hard difficulty button
             love.graphics.setColor(0, 0, 0, 1)
@@ -92,7 +132,7 @@ function love.draw()
             love.graphics.setColor(0.9, 1, 0.9, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 175, 400, 90)
             love.graphics.setColor(0, 0, 0, 1)
-            love.graphics.printf(difficulty[3], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 220 - fontHeight / 2, 400, "center")
+            love.graphics.printf(difficulty_string[3], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 220 - fontHeight / 2, 400, "center")
 
             --Insane difficulty button
             love.graphics.setColor(0, 0, 0, 1)
@@ -100,19 +140,23 @@ function love.draw()
             love.graphics.setColor(0.9, 1, 0.9, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 285, 400, 90)
             love.graphics.setColor(0, 0, 0, 1)
-            love.graphics.printf(difficulty[4], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 330 - fontHeight / 2, 400, "center")
+            love.graphics.printf(difficulty_string[4], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 + 330 - fontHeight / 2, 400, "center")
         end
     end
 
     local function questionGUI()
         if gameState == 1 then
+
+            local displayed_question = 1
+
+            question_fill()
             --Question Box
             love.graphics.setColor(0, 0, 0, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 405, WINDOW_HEIGHT / 4 - 45, 810, 90)
             love.graphics.setColor(0.9, 1, 0.9, 1)
             love.graphics.rectangle("fill", WINDOW_WIDTH / 2 - 400, WINDOW_HEIGHT / 4 - 40, 800, 80)
             love.graphics.setColor(0, 0, 0, 1)
-            love.graphics.printf(questions.Easy[1][1], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 - fontHeight / 2, 400, "center")
+    --        love.graphics.printf(questions.Easy[1][1], WINDOW_WIDTH / 2 - 200, WINDOW_HEIGHT / 4 - fontHeight / 2, 400, "center")
 
             --Answer A button
             love.graphics.setColor(0, 0, 0, 1)
@@ -141,7 +185,7 @@ function love.draw()
     end
 
     mainGUI()
-    questionGUI()
+    --questionGUI()
 
    --[[ local function main_buttonPress(mainButton)
         function love.mousepressed(x, y, b, istouched)
@@ -169,33 +213,42 @@ function love.draw()
             if b == 1 then 
                 if math.abs(menu.main.buttons.b1.x + menu.main.buttons.b1.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b1.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b1.y + menu.main.buttons.b1.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b1.buttonHeight / 2  then 
-                gameState = gameState + 1 
-                love.graphics.clear()
-                menu.main.buttons.b1.isPressed = true
-                questionGUI()
+                    gameState = gameState + 1 
+                    love.graphics.clear()
+                    menu.main.buttons.b1.isPressed = true
+                    questionGUI()
 
                 elseif math.abs(menu.main.buttons.b2.x + menu.main.buttons.b2.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b2.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b2.y + menu.main.buttons.b2.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b2.buttonHeight / 2  then 
-                gameState = gameState + 1 
-                love.graphics.clear()
-                menu.main.buttons.b2.isPressed = true
-                questionGUI()
+                    gameState = gameState + 1 
+                    love.graphics.clear()
+                    menu.main.buttons.b2.isPressed = true
+                    questionGUI()
 
                 elseif math.abs(menu.main.buttons.b3.x + menu.main.buttons.b3.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b3.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b3.y + menu.main.buttons.b3.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b3.buttonHeight / 2  then 
-                gameState = gameState + 1 
-                love.graphics.clear()
-                menu.main.buttons.b3.isPressed = true
-                questionGUI()
+                    gameState = gameState + 1 
+                    love.graphics.clear()
+                    menu.main.buttons.b3.isPressed = true
+                    questionGUI()
 
                 elseif math.abs(menu.main.buttons.b4.x + menu.main.buttons.b4.buttonWidth / 2 - love.mouse.getX()) < menu.main.buttons.b4.buttonWidth / 2 and
                 math.abs(menu.main.buttons.b4.y + menu.main.buttons.b4.buttonHeight / 2 - love.mouse.getY()) < menu.main.buttons.b4.buttonHeight / 2  then 
-                gameState = gameState + 1 
-                love.graphics.clear()
-                menu.main.buttons.b4.isPressed = true
-                questionGUI()
+                    gameState = gameState + 1 
+                    love.graphics.clear()
+                    menu.main.buttons.b4.isPressed = true
+                    questionGUI()
                 end
             end 
+        end
+
+        if gameState == 1 then
+            if b == 1 then
+                if math.abs(menu.question.buttons.bA.x + menu.question.buttons.bA.buttonWidth / 2 - love.mouse.getX()) < menu.question.buttons.bA.buttonWidth / 2 and
+                math.abs(menu.question.buttons.bA.y + menu.question.buttons.bA.buttonHeight / 2 - love.mouse.getY()) < menu.question.buttons.bA.buttonHeight / 2  then
+                    love.graphics.clear()  
+                end
+            end
         end
     end
 
